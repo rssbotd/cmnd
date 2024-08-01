@@ -1,0 +1,47 @@
+[build-system]
+requires = [
+    "setuptools>=64.0.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "cmnd"
+description = "write your own command"
+version = "1"
+authors = [
+    {name = "Bart Thate",email = "bthate@dds.nl"},
+]
+readme = "README.rst"
+license = {text="Public Domain"}
+classifiers = [ 
+    'Development Status :: 3 - Alpha',
+    'License :: Public Domain',
+    'Operating System :: Unix',
+    'Programming Language :: Python',
+    'Topic :: Utilities'
+]
+
+
+[project.scripts]
+"cmnd"  = "cmnd.__main__:main"
+"cmndd" = "cmnd.daemon:main"
+
+[project.urls]
+"home" = "https://pypi.org/project/cmnd"
+"bugs" = "https://github.com/xobjectz/cmnd/issues"
+"source" = "https://github.com/xobjectz/cmnd"
+
+[tools.setuptools]
+packages=[
+    "cmnd",
+    "cmnd.modules",
+    "cmnd.user"
+]
+zip-safe=true
+
+[tool.setuptools.data-files]
+"share/doc/cmnd" = [
+    "README.rst"
+]
