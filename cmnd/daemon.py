@@ -11,16 +11,18 @@ import sys
 
 
 from .cfg    import Config
+from .errors import errors, later
 from .disk   import Persist, skel
-from .main   import init, wrap
+from .main   import enable, init, scan, wrap
 from .utils  import forever, pidfile, privileges
 
 
-from . import modules
+from . import modules, user
 
 
 Cfg         = Config()
-Cfg.name    = "cmnd"
+Cfg.mod     = "irc,rss"
+Cfg.name    = __file__.split(os.sep)[-2]
 Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
@@ -47,18 +49,23 @@ def daemon(verbose=False):
             os.dup2(ses.fileno(), sys.stderr.fileno())
     os.umask(0)
     os.chdir("/")
+    os.nice(10)
 
 
 def main():
     "main"
     daemon()
-    skel()
     privileges(Cfg.user)
+    skel()
     pidfile(Cfg.pidfile)
-    init(Cfg.mod, modules)
-    os.nice(10)
+    scan(Cfg.mod, modules, user)
+    init(Cfg.mod, modules, user)
     forever()
 
 
-if __name__ == "__main__":
+def wrapped():
     wrap(main)
+
+
+if __name__ == "__main__":
+    wrapped()

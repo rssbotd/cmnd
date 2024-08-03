@@ -7,7 +7,7 @@
 
 from .client import Client, command
 from .cmds   import Commands
-from .errors import Errors, errors, later
+from .errors import Errors, errors
 from .disk   import Persist
 from .event  import Event
 from .log    import Logging
@@ -68,9 +68,12 @@ def wrap(func):
     "catch exceptions"
     try:
         func()
+    except (KeyboardInterrupt, EOFError):
+        print("")
     except Exception as ex:
         later(ex)
     errors()
+
 
 
 def __dir__():

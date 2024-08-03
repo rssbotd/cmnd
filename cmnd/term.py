@@ -33,9 +33,3 @@ class Console(Client):
         evt.txt = self.inner(self.prompt)
         evt.type = "command"
         return evt
-
-
-def __dir__():
-    return (
-        'Console',
-    )
